@@ -1,3 +1,170 @@
+def create_order(products):
+    orderclient = []
+    orderstatus = "Disabled"
+
+
+    
+    while True:
+
+        idorder = input("inform the product ID: ").strip()
+
+
+
+        if not idorder.isdigit():
+
+            print("Insert only positive inteer numbers")
+
+            continue
+
+        
+
+        
+
+        idorder = int(idorder)
+
+
+
+        found = False
+
+        found_product = None
+
+        for product in products:
+
+
+
+            if product["id"] == idorder:
+
+                found = True
+
+                found_product = product
+
+                break
+
+
+
+
+
+        if not found:
+
+            print("Product not found, try again...")
+
+            continue
+
+        
+
+        print(f"Product found, ({found_product['name']})")
+
+
+
+        while True:
+
+
+
+            stockorder = input("Inform the quantity of product: ").strip()
+
+
+
+            if not stockorder.isdigit():
+
+                print("Insert only positive inteer numbers")
+
+                continue
+
+
+
+            stockorder = int(stockorder)
+
+        
+
+            if stockorder > found_product['stock']:
+
+                print(f"Sorry, but we have only {found_product['stock']} unitys in stock. Please try again")
+
+                continue
+
+
+
+            elif stockorder == 0:
+
+                print("Insert a quanty greater than zero...")
+
+                continue
+
+
+
+            else:
+
+                print("Sucess!")
+
+                print(f"{stockorder} unitys of {found_product['name']} went into your cart")
+
+                break
+
+        for productclient in orderclient:
+            if productclient["id"] == idorder:
+                productclient["quantity"] = stockorder
+                print("Since this product has already been registered, only the quantity will be updated.")
+                break
+
+        else:
+            order = {"id": idorder, "name": found_product["name"],"price": found_product["price"], "quantity": stockorder }
+            orderclient.append(order)
+
+
+        again = input("You want to continue? Yes/No: ").strip().lower()
+
+
+
+        while again not in ("yes","y","no","n"):
+
+            print("Insert 'Yes' to add a new product in your order or 'no' for exit") 
+
+            again = input("Do you want to continue? Yes/No: ").strip().lower()
+
+                
+
+        if again in ("yes","y"):
+
+            continue
+
+        
+
+        elif again in ("no","n"):
+
+            print(f"Your order: {orderclient}")
+
+            confirm = input("Do you confirm your order? Yes/No: ").strip().lower()
+
+            while confirm not in ("yes","y","no","n"):
+
+                print("Insert 'Yes' to confirm the order or 'no' for cancel the order")
+                confirm = input("Do you confirm your order? Yes/No: ").strip().lower()
+
+            if confirm in ("yes","y"):
+
+                    print("Order successfully generated!")
+                    orderstatus = "Activated"
+
+
+                    for product1 in products:
+
+                        for product2 in orderclient:
+
+                            if product2["id"] == product1["id"]:
+
+                                newstock = product1["stock"] - product2["quantity"] 
+
+                                product1["stock"] = newstock
+
+                                break               
+        
+            elif confirm in ("no","n"):
+
+                print("Order successfully cancelled!")
+                break
+ 
+
+    return orderclient,orderstatus
 
 products = [
     {"id": 101, "name": "Keyboard", "price": 150.00, "stock": 5},
@@ -21,99 +188,9 @@ if option in ("1","1-listproducts"):
         print(products[i])
 
 elif option in ("2","2-createorder"):
-
-    orderclient = []
-
-    while True:
-        idorder = input("inform the product ID: ").strip()
-
-        if not idorder.isdigit():
-            print("Insert only positive inteer numbers")
-            continue
-        
-        
-        idorder = int(idorder)
-
-        found = False
-        found_product = None
-        for product in products:
-
-            if product["id"] == idorder:
-                found = True
-                found_product = product
-                break
+    create_order(products)
 
 
-        if not found:
-            print("Product not found, try again...")
-            continue
-        
-        print(f"Product found, ({found_product['name']})")
-
-        while True:
-
-            stockorder = input("Inform the quantity of product: ").strip()
-
-            if not stockorder.isdigit():
-                print("Insert only positive inteer numbers")
-                continue
-
-            stockorder = int(stockorder)
-        
-            if stockorder > found_product['stock']:
-                print(f"Sorry, but we have only {found_product['stock']} unitys in stock. Please try again")
-                continue
-
-            elif stockorder == 0:
-                print("Insert a quanty greater than zero...")
-                continue
-
-            else:
-                print("Sucess!")
-                print(f"{stockorder} unitys of {found_product['name']} went into your cart")
-                break
-
-        order = {"id": idorder, "name": found_product["name"],"price": found_product["price"], "quantity": stockorder }
-        orderclient.append(order)
-
-        again = input("You want to continue? Yes/No: ").strip().lower()
-
-        while again not in ("yes","y","no","n"):
-            print("Insert 'Yes' to add a new product in your order or 'not' for exit") 
-            again = input("You want to continue? Yes/No: ").strip().lower()
-             
-        if again in ("yes","y"):
-            continue
-        
-        elif again in ("no","n"):
-            print(f"Your order: {orderclient}")
-            while True:
-
-                confirm = input("Do you confirm your order? Yes/No: ").strip().lower()
-                if confirm not in ("yes","y","no","n"):
-                    print("Insert 'Yes' to confirm the order or 'not' for cancel the order")
-
-                    continue
-
-                elif confirm in ("yes","y"):
-                    print("Order successfully generated!")
-
-                    for product1 in products:
-                        for product2 in orderclient:
-                            if product2["id"] == product1["id"]:
-                                newstock = product1["stock"] - product2["quantity"] 
-                                product1["quantity"] = newstock
-                                break
-
-                    print(products)
-                        
-                    break
-
-                else:
-                    del orderclient
-                    print("Order successfully cancelled!")
-                    break
-            break
 
                                    
 
