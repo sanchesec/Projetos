@@ -1,15 +1,19 @@
-def create_order(products):
+def create_order(products,showorders):
+    # Stores the products from the current order
     orderclient = []
+    # The order status starts disabled
     orderstatus = "Disabled"
 
 
-    
+    # Main loop to create the order
     while True:
 
+        # Ask the for the product ID
         idorder = input("inform the product ID: ").strip()
 
 
 
+        # Check if the ID contains only numbers
         if not idorder.isdigit():
 
             print("Insert only positive inteer numbers")
@@ -17,14 +21,13 @@ def create_order(products):
             continue
 
         
-
         
 
         idorder = int(idorder)
 
 
 
-        found = False
+        # Search the product by ID
 
         found_product = None
 
@@ -34,8 +37,6 @@ def create_order(products):
 
             if product["id"] == idorder:
 
-                found = True
-
                 found_product = product
 
                 break
@@ -44,7 +45,8 @@ def create_order(products):
 
 
 
-        if not found:
+        # If the product was not found, ask again
+        if found_product == None:
 
             print("Product not found, try again...")
 
@@ -56,14 +58,17 @@ def create_order(products):
 
 
 
+        # Loop to validate the product quantity
         while True:
 
 
 
+            # Ask the client for the product quantity
             stockorder = input("Inform the quantity of product: ").strip()
 
 
 
+            # Check if the quantity contains only numbers
             if not stockorder.isdigit():
 
                 print("Insert only positive inteer numbers")
@@ -76,6 +81,7 @@ def create_order(products):
 
         
 
+            # Check if there is enough stock
             if stockorder > found_product['stock']:
 
                 print(f"Sorry, but we have only {found_product['stock']} unitys in stock. Please try again")
@@ -84,6 +90,7 @@ def create_order(products):
 
 
 
+            # The quantity cannot be zero
             elif stockorder == 0:
 
                 print("Insert a quanty greater than zero...")
@@ -100,21 +107,34 @@ def create_order(products):
 
                 break
 
+
+        # Check if the product is already in the order
         for productclient in orderclient:
+
             if productclient["id"] == idorder:
+
+                # If the product already exists, update only the quantity
                 productclient["quantity"] = stockorder
+
                 print("Since this product has already been registered, only the quantity will be updated.")
+
                 break
 
+
+        # If the product is not in the order, add it
         else:
+
             order = {"id": idorder, "name": found_product["name"],"price": found_product["price"], "quantity": stockorder }
+
             orderclient.append(order)
 
 
+        # Ask if the client wants to add another product
         again = input("You want to continue? Yes/No: ").strip().lower()
 
 
 
+        # Check if the answer is valid
         while again not in ("yes","y","no","n"):
 
             print("Insert 'Yes' to add a new product in your order or 'no' for exit") 
@@ -123,6 +143,7 @@ def create_order(products):
 
                 
 
+        # if client wants to continue, the system returns to the main loop to add another product
         if again in ("yes","y"):
 
             continue
@@ -133,37 +154,58 @@ def create_order(products):
 
             print(f"Your order: {orderclient}")
 
+
+            # Ask the client to confirm the order
             confirm = input("Do you confirm your order? Yes/No: ").strip().lower()
 
+
+            # Keep asking until the client gives a valid answer
             while confirm not in ("yes","y","no","n"):
 
                 print("Insert 'Yes' to confirm the order or 'no' for cancel the order")
+
                 confirm = input("Do you confirm your order? Yes/No: ").strip().lower()
 
+
+            # Confirm the order
             if confirm in ("yes","y"):
 
                     print("Order successfully generated!")
+
+                    # Change the order status after confirmation
                     orderstatus = "Activated"
 
 
+                    # Search the ordered products in the inventory
                     for product1 in products:
 
                         for product2 in orderclient:
 
+
+                            # Compare the products by ID
                             if product2["id"] == product1["id"]:
 
+
+                                # Calculate and update the new stock
                                 newstock = product1["stock"] - product2["quantity"] 
 
                                 product1["stock"] = newstock
 
+                                showorders.append(orderclient)
+                                
+
                                 break               
-        
+                    break     
+
+            # Cancel the order
             elif confirm in ("no","n"):
 
                 print("Order successfully cancelled!")
-                break
- 
 
+                break
+
+
+    # Return the order and its status
     return orderclient,orderstatus
 
 products = [
@@ -172,6 +214,9 @@ products = [
     {"id": 103, "name": "Monitor", "price": 1200.00, "stock": 3},
     {"id": 104, "name": "Headset", "price": 250.00, "stock": 6}
 ]
+
+showorders = []
+
 
 print("1 - List products")
 print("2 - Create order")
@@ -183,12 +228,17 @@ print("0 - Exit")
 option = input("Choose a option: ").strip().lower()
 option = option.replace(" ","")
 
-if option in ("1","1-listproducts"):
+if option in ("1","1-listproducts","listproducts"):
     for i in range(len(products)):
         print(products[i])
 
-elif option in ("2","2-createorder"):
-    create_order(products)
+elif option in ("2","2-createorder","createorder"):
+
+    orderclient, orderstatus = create_order(products,showorders)
+    print(orderclient, orderstatus, showorders, len(showorders))
+
+#elif option in ("3","3-cancelorder","cancelorder"):
+
 
 
 
