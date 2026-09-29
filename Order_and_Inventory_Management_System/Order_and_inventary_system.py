@@ -208,6 +208,8 @@ def create_order(products,showorders):
     # Return the order and its status
     return orderclient,orderstatus
 
+
+
 products = [
     {"id": 101, "name": "Keyboard", "price": 150.00, "stock": 5},
     {"id": 102, "name": "Mouse", "price": 80.00, "stock": 8},
@@ -216,33 +218,38 @@ products = [
 ]
 
 showorders = []
+returntomenu = "y"
+
+while returntomenu == "y":
+
+    print("1 - List products")
+    print("2 - Create order")
+    print("3 - Cancel order")
+    print("4 - Show orders")
+    print("5 - Sales report")
+    print("0 - Exit")
+
+    option = input("Choose a option: ").strip().lower()
+    option = option.replace(" ","")
+
+    if option in ("1","1-listproducts","listproducts"):
+        for i in range(len(products)):
+            print(products[i])
 
 
-print("1 - List products")
-print("2 - Create order")
-print("3 - Cancel order")
-print("4 - Show orders")
-print("5 - Sales report")
-print("0 - Exit")
+    elif option in ("2","2-createorder","createorder"):
 
-option = input("Choose a option: ").strip().lower()
-option = option.replace(" ","")
-
-if option in ("1","1-listproducts","listproducts"):
-    for i in range(len(products)):
-        print(products[i])
-
-elif option in ("2","2-createorder","createorder"):
-
-    orderclient, orderstatus = create_order(products,showorders)
-    print(orderclient, orderstatus, showorders, len(showorders))
-
-#elif option in ("3","3-cancelorder","cancelorder"):
+        orderclient, orderstatus = create_order(products,showorders)
+        print(showorders,len(showorders))
 
 
+    #elif option in ("3","3-cancelorder","cancelorder"):
+ 
+    elif option in ("0","0-exit","exit"):
+        print("The system will be shut down. Thank you for using the system.")
+        returntomenu = "n"
 
 
-                                   
 
 
 
