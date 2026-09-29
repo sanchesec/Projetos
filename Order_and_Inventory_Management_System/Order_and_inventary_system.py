@@ -191,9 +191,6 @@ def create_order(products,showorders):
 
                                 product1["stock"] = newstock
 
-                                showorders.append(orderclient)
-                                
-
                                 break               
                     break     
 
@@ -240,20 +237,22 @@ while returntomenu == "y":
     elif option in ("2","2-createorder","createorder"):
 
         orderclient, orderstatus = create_order(products,showorders)
-        print(showorders,len(showorders))
 
-
+        #Save this specific order to a list with all orders
+        showorders.append(orderclient)
+        
     #elif option in ("3","3-cancelorder","cancelorder"):
- 
+
+    elif option in ("4","4-showorders","showorders"):
+        if showorders == []:
+            print("So far, no requests have been saved.")
+        else:
+            print (showorders, len(showorders))
+            for id,orderclient in enumerate(showorders,99):
+                id += 1
+                print(f"id order: {id}", orderclient)
+            
+
     elif option in ("0","0-exit","exit"):
         print("The system will be shut down. Thank you for using the system.")
         returntomenu = "n"
-
-
-
-
-
-
-
-
-
