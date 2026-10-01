@@ -52,7 +52,12 @@ def create_order(products,showorders):
 
             continue
 
+        # checks if there are items in stock
+        elif found_product['stock'] == 0:
         
+            print("We don't have this item in stock at the moment.")
+
+            continue
 
         print(f"Product found, ({found_product['name']})")
 
@@ -96,7 +101,6 @@ def create_order(products,showorders):
                 print("Insert a quanty greater than zero...")
 
                 continue
-
 
 
             else:
@@ -247,7 +251,6 @@ while returntomenu == "y":
         if showorders == []:
             print("So far, no requests have been saved.")
         else:
-            print (showorders, len(showorders))
             for id,orderclient in enumerate(showorders,99):
                 id += 1
                 print(f"id order: {id}", orderclient)
