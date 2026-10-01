@@ -242,8 +242,16 @@ while returntomenu == "y":
 
         orderclient, orderstatus = create_order(products,showorders)
 
-        #Save this specific order to a list with all orders
-        showorders.append(orderclient)
+        #Save this specific order to a list with all orders, if "Activated"
+        if orderstatus == "Activated":
+            
+            showorders.append(orderclient)
+
+        elif orderstatus == "Disabled":
+            
+            del orderstatus
+
+        
         
     #elif option in ("3","3-cancelorder","cancelorder"):
 
