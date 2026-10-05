@@ -209,6 +209,13 @@ def create_order(products,showorders):
     # Return the order and its status
     return orderclient,orderstatus
 
+def create_info_order(orderclient,showorders,orderstatus):
+
+    order = {"id order": 100 + len(showorders), "status": orderstatus, "products": orderclient }
+
+    showorders.append(order)
+
+    return showorders
 
 
 products = [
@@ -242,6 +249,8 @@ while returntomenu == "y":
 
         orderclient, orderstatus = create_order(products,showorders)
 
+        showorders = create_info_order(orderclient,showorders,orderstatus)
+
         #Save this specific order to a list with all orders, if "Activated"
         if orderstatus == "Activated":
             
@@ -256,14 +265,18 @@ while returntomenu == "y":
     #elif option in ("3","3-cancelorder","cancelorder"):
 
     elif option in ("4","4-showorders","showorders"):
+
         if showorders == []:
+
             print("So far, no requests have been saved.")
+
         else:
-            for id,orderclient in enumerate(showorders,99):
-                id += 1
-                print(f"id order: {id}", orderclient)
+
+            print(showorders)
             
 
     elif option in ("0","0-exit","exit"):
+
         print("The system will be shut down. Thank you for using the system.")
+
         returntomenu = "n"
