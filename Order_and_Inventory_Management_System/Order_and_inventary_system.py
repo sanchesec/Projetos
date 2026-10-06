@@ -260,8 +260,59 @@ while returntomenu == "y":
             del orderstatus
 
         
+    
+    elif option in ("3","3-cancelorder","cancelorder"):
+
+        if showorders == []:
+
+            print("So far, no requests have been saved.")
+
+        else:
+
+            for order in showorders:
+
+                print(order)
+
+
+            while True:
+
+                idcancel = input('Enter the order ID you wish to cancel: ').strip()
+
         
-    #elif option in ("3","3-cancelorder","cancelorder"):
+                if not idcancel.isdigit():
+
+                    print("Insert only positive inteer numbers")
+
+                    continue
+
+
+                idcancel = int(idcancel)
+
+
+                for order in showorders:
+
+                    if idcancel == order["id order"]:
+
+                        order["status"] = "Disabled"
+
+                        for product in products:
+
+                            if order["products"]["id product"] == product["id product"]:
+
+                                product["stock"] += order["products"]["quantity"]
+
+                            
+
+                        break
+
+                else:
+
+                    print("There are no orders with that ID, please try again.")
+
+                    continue
+
+                break
+
 
     elif option in ("4","4-showorders","showorders"):
 
@@ -272,6 +323,7 @@ while returntomenu == "y":
         else:
 
             for order in showorders:
+
                 print(order)
             
 
