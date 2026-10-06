@@ -9,12 +9,12 @@ def create_order(products,showorders):
     while True:
 
         # Ask the for the product ID
-        idorder = input("inform the product ID: ").strip()
+        idproduct = input("inform the product ID: ").strip()
 
 
 
         # Check if the ID contains only numbers
-        if not idorder.isdigit():
+        if not idproduct.isdigit():
 
             print("Insert only positive inteer numbers")
 
@@ -23,7 +23,7 @@ def create_order(products,showorders):
         
         
 
-        idorder = int(idorder)
+        idproduct = int(idproduct)
 
 
 
@@ -35,7 +35,7 @@ def create_order(products,showorders):
 
 
 
-            if product["id"] == idorder:
+            if product["id product"] == idproduct:
 
                 found_product = product
 
@@ -115,7 +115,7 @@ def create_order(products,showorders):
         # Check if the product is already in the order
         for productclient in orderclient:
 
-            if productclient["id"] == idorder:
+            if productclient["id product"] == idproduct:
 
                 # If the product already exists, update only the quantity
                 productclient["quantity"] = stockorder
@@ -128,7 +128,7 @@ def create_order(products,showorders):
         # If the product is not in the order, add it
         else:
 
-            order = {"id": idorder, "name": found_product["name"],"price": found_product["price"], "quantity": stockorder }
+            order = {"id product": idproduct, "name": found_product["name"],"price": found_product["price"], "quantity": stockorder }
 
             orderclient.append(order)
 
@@ -187,7 +187,7 @@ def create_order(products,showorders):
 
 
                             # Compare the products by ID
-                            if product2["id"] == product1["id"]:
+                            if product2["id product"] == product1["id product"]:
 
 
                                 # Calculate and update the new stock
@@ -211,18 +211,17 @@ def create_order(products,showorders):
 
 def create_info_order(orderclient,showorders,orderstatus):
 
-    order = {"id order": 100 + len(showorders), "status": orderstatus, "products": orderclient }
+    order = {"id order": 1000 + len(showorders), "status": orderstatus, "products": orderclient }
 
-    showorders.append(order)
 
-    return showorders
+    return order
 
 
 products = [
-    {"id": 101, "name": "Keyboard", "price": 150.00, "stock": 5},
-    {"id": 102, "name": "Mouse", "price": 80.00, "stock": 8},
-    {"id": 103, "name": "Monitor", "price": 1200.00, "stock": 3},
-    {"id": 104, "name": "Headset", "price": 250.00, "stock": 6}
+    {"id product": 101, "name": "Keyboard", "price": 150.00, "stock": 5},
+    {"id product": 102, "name": "Mouse", "price": 80.00, "stock": 8},
+    {"id product": 103, "name": "Monitor", "price": 1200.00, "stock": 3},
+    {"id product": 104, "name": "Headset", "price": 250.00, "stock": 6}
 ]
 
 showorders = []
@@ -249,12 +248,12 @@ while returntomenu == "y":
 
         orderclient, orderstatus = create_order(products,showorders)
 
-        showorders = create_info_order(orderclient,showorders,orderstatus)
+        order = create_info_order(orderclient,showorders,orderstatus)
 
         #Save this specific order to a list with all orders, if "Activated"
         if orderstatus == "Activated":
             
-            showorders.append(orderclient)
+            showorders.append(order)
 
         elif orderstatus == "Disabled":
             
@@ -272,7 +271,8 @@ while returntomenu == "y":
 
         else:
 
-            print(showorders)
+            for order in showorders:
+                print(order)
             
 
     elif option in ("0","0-exit","exit"):
