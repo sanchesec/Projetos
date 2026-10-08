@@ -269,6 +269,8 @@ while returntomenu == "y":
 
         else:
 
+
+
             for order in showorders:
 
                 print(order)
@@ -285,21 +287,31 @@ while returntomenu == "y":
 
                     continue
 
-
+                
                 idcancel = int(idcancel)
+
 
 
                 for order in showorders:
 
                     if idcancel == order["id order"]:
 
+
+                        if order["status"] == "Disabled":
+
+                            print("This order already went canceled")
+
+                            break
+
                         order["status"] = "Disabled"
 
-                        for product in products:
 
-                            if order["products"]["id product"] == product["id product"]:
+                        for productorder in order["products"]:
+                            for productstock in products:
 
-                                product["stock"] += order["products"]["quantity"]
+                                if productorder["id product"] == productstock["id product"]:
+
+                                    productstock["stock"] += productorder["quantity"]
 
                             
 
