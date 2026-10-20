@@ -217,7 +217,7 @@ def create_info_order(orderclient,showorders,orderstatus):
     return order
 
 
-products = [
+product = [
     {"id product": 101, "name": "Keyboard", "price": 150.00, "stock": 5},
     {"id product": 102, "name": "Mouse", "price": 80.00, "stock": 8},
     {"id product": 103, "name": "Monitor", "price": 1200.00, "stock": 3},
@@ -240,13 +240,13 @@ while returntomenu == "y":
     option = option.replace(" ","")
 
     if option in ("1","1-listproducts","listproducts"):
-        for i in range(len(products)):
-            print(products[i])
+        for i in range(len(product)):
+            print(product[i])
 
 
     elif option in ("2","2-createorder","createorder"):
 
-        orderclient, orderstatus = create_order(products,showorders)
+        orderclient, orderstatus = create_order(product,showorders)
 
         order = create_info_order(orderclient,showorders,orderstatus)
 
@@ -307,15 +307,17 @@ while returntomenu == "y":
 
 
                         for productorder in order["products"]:
-                            for productstock in products:
+                            for productstock in product:
 
                                 if productorder["id product"] == productstock["id product"]:
 
                                     productstock["stock"] += productorder["quantity"]
 
                             
-
+                        print("Order canceled successfully")
+                        
                         break
+
 
                 else:
 
@@ -337,7 +339,64 @@ while returntomenu == "y":
             for order in showorders:
 
                 print(order)
+
+
+    elif option in ("5","5-salesreport","salesreport"):
+
+
+
+        orderactive = []
+
+        for order in showorders:
+
+            if order["status"] == "Activated":
+
+                orderactive.append(order)
+
+                
+        print(f"Total active orders: {len(orderactive)}")
+
+
+
+        billing = 0
+
+        for order in orderactive:
+
+            for products in order["products"]:
+
+                billing += products["price"] * products["quantity"]
+
+        print(f"Total billing to pay: ${billing}")
+
+
+
+
+        bestseller, quantitysalesbestseller = None, 0
+
+        for order in orderactive:
+
+            for products in order["products"]:
+
+                if products["quantity"] > quantitysalesbestseller :
+
+                    bestseller, quantitysalesbestseller = products["name"], products["quantity"]
             
+        print(f"Best seller product: {bestseller} with {quantitysalesbestseller} sales ")
+
+
+
+        highestrevenueproduct, valuationsalesproduct = None, 0
+
+        for order in orderactive:
+
+            for products in order["products"]:
+
+                if products["quantity"] * products["price"] > valuationsalesproduct :
+
+                    highestrevenueproduct, valuationsalesproduct = products["name"], products["quantity"] * products["price"]
+
+        print(f"Highest revenue product: {highestrevenueproduct} , with ${valuationsalesproduct} dollars sales")
+    
 
     elif option in ("0","0-exit","exit"):
 
