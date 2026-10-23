@@ -344,8 +344,9 @@ while returntomenu == "y":
     elif option in ("5","5-salesreport","salesreport"):
 
 
-
+        
         orderactive = []
+        
 
         for order in showorders:
 
@@ -353,18 +354,45 @@ while returntomenu == "y":
 
                 orderactive.append(order)
 
-                
-        print(f"Total active orders: {len(orderactive)}")
-
-
-
-        billing = 0
+        salesreport = []
 
         for order in orderactive:
 
             for products in order["products"]:
 
-                billing += products["price"] * products["quantity"]
+                find = False
+
+                for report in salesreport:
+
+                    if products["id product"] == report["id report"]:
+
+                        report["unit report"] += products["quantity"]
+                        report["price report"] += products["price"] * products["quantity"]
+                        find = True
+
+                        break
+
+
+                if not find:
+                            
+                    ordereport = {"id report": products["id product"], "name report": products["name"] , "unit report": products["quantity"], "price report": ( products["price"] * products["quantity"] )}
+                                        
+                    salesreport.append(ordereport)
+                
+
+        print("Accountability report for all requests\n")
+        
+        for report in salesreport:
+            print(f"{report}\n")
+
+        print(f"Total active orders: {len(orderactive)}")
+
+
+        billing = 0
+
+        for report in salesreport:
+
+            billing += report["price report"]
 
         print(f"Total billing to pay: ${billing}")
 
@@ -373,13 +401,12 @@ while returntomenu == "y":
 
         bestseller, quantitysalesbestseller = None, 0
 
-        for order in orderactive:
+        for report in salesreport:
+                
+            if report["unit report"] > quantitysalesbestseller :
 
-            for products in order["products"]:
+                bestseller, quantitysalesbestseller = report["name report"], report["unit report"]
 
-                if products["quantity"] > quantitysalesbestseller :
-
-                    bestseller, quantitysalesbestseller = products["name"], products["quantity"]
             
         print(f"Best seller product: {bestseller} with {quantitysalesbestseller} sales ")
 
@@ -387,16 +414,15 @@ while returntomenu == "y":
 
         highestrevenueproduct, valuationsalesproduct = None, 0
 
-        for order in orderactive:
+        for report in salesreport:
+                
+            if report["price report"] > valuationsalesproduct:
 
-            for products in order["products"]:
+                highestrevenueproduct, valuationsalesproduct = report["name report"], report["price report"]
 
-                if products["quantity"] * products["price"] > valuationsalesproduct :
-
-                    highestrevenueproduct, valuationsalesproduct = products["name"], products["quantity"] * products["price"]
 
         print(f"Highest revenue product: {highestrevenueproduct} , with ${valuationsalesproduct} dollars sales")
-    
+
 
     elif option in ("0","0-exit","exit"):
 
